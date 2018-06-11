@@ -1,0 +1,385 @@
+#if !defined(_ANYCHAT_CORE_GLOBAL_DEFINE_H__INCLUDED_)
+#define _ANYCHAT_CORE_GLOBAL_DEFINE_H__INCLUDED_
+
+#include "osdef.h"
+
+/**
+ *	AnyChat Core SDK 全局标志、常量定义
+ */
+
+#define AC_SERVER_USERID		0						///< 服务器用户ID
+#define AC_MAGIC_USERID			0xFFFFFFFF				///< 魔力ID，在不同的环境下表示不同的意义，常用的有代表本地用户ID、所有人等
+#define AC_INVALID_TASKID		0xFFFFFFFF
+ 
+// 音频播放驱动定义
+enum AC_AUDIOPLAY_DRIVER
+{
+	AC_AUDIOPLAY_DRIVER_DEFAULT = 0,					///< 默认驱动
+	AC_AUDIOPLAY_DRIVER_DSOUND,							///< DSound驱动
+	AC_AUDIOPLAY_DRIVER_WAVEOUT,						///< WaveOut驱动
+	AC_AUDIOPLAY_DRIVER_ANDROIDJAVA,					///< Android Java驱动
+	AC_AUDIOPLAY_DRIVER_IOSAUDIOQUEUE,					///< iOS AudioQueue驱动
+	AC_AUDIOPLAY_DRIVER_MAXNUM,							///< 用于判断是否越界
+};
+
+// 音频采集驱动定义
+enum AC_AUDIORECORD_DRIVER
+{
+	AC_AUDIORECORD_DRIVER_DEFAULT = 0,					///< 默认驱动
+	AC_AUDIORECORD_DRIVER_DSOUND,						///< DSound驱动
+	AC_AUDIORECORD_DRIVER_WAVEIN,						///< WaveIn驱动
+	AC_AUDIORECORD_DRIVER_ANDROIDJAVA,					///< Android Java驱动
+	AC_AUDIORECORD_DRIVER_IOSAUDIOQUEUE,				///< iOS AudioQueue驱动
+	AC_AUDIORECORD_DRIVER_MAXNUM,
+};
+
+// 视频采集驱动定义
+enum AC_VIDEOCAPTURE_DRIVER
+{
+	AC_VIDEOCAPTURE_DRIVER_DEFAULT = 0,					///< 默认驱动
+	AC_VIDEOCAPTURE_DRIVER_V4L,							///< Video4Linux驱动
+	AC_VIDEOCAPTURE_DRIVER_DSHOW,						///< DirectShow驱动
+	AC_VIDEOCAPTURE_DRIVER_ANDROIDJAVA,					///< Android Java驱动
+	AC_VIDEOCAPTURE_DRIVER_MAXNUM,
+};
+
+// 视频显示驱动定义
+enum AC_VIDEOSHOW_DRIVER{
+	AC_VIDEOSHOW_DRIVER_DEFAULT = 0,					///< 默认显示驱动
+	AC_VIDEOSHOW_DRIVER_DIRECTSHOW,						///< DirectShow显示驱动
+	AC_VIDEOSHOW_DRIVER_WINDOWSGDI,						///< Windows GDI驱动
+	AC_VIDEOSHOW_DRIVER_SDL,							///< SDL
+	AC_VIDEOSHOW_DRIVER_ANDROID2X,						///< Android 2.x兼容模式
+	AC_VIDEOSHOW_DRIVER_ANDROIDJAVA,					///< Android Java显示
+	AC_VIDEOSHOW_DRIVER_MAXNUM,
+};
+
+
+#ifdef APPLEOS
+
+#define NS2C(a) [a cStringUsingEncoding:0x80000632]
+#define C2NS(a) [NSString stringWithCString: a encoding:0x80000632]
+
+#define ANYCHAT_NOTIFYTYPE_NOTIFYMSG    0x01
+#define ANYCHAT_NOTIFYTYPE_TEXTMSG      0x02
+#define ANYCHAT_NOTIFYTYPE_TRANSBUF     0x03
+#define ANYCHAT_NOTIFYTYPE_TRANSBUFEX   0x04
+#define ANYCHAT_NOTIFYTYPE_TRANSFILE    0x05
+#define ANYCHAT_NOTIFYTYPE_SDKFILTER    0x06
+#define ANYCHAT_NOTIFYTYPE_RECSNAP      0x07
+#define ANYCHAT_NOTIFYTYPE_VIDEODATA    0x08
+#define ANYCHAT_NOTIFYTYPE_AUDIODATA    0x09
+#define ANYCHAT_NOTIFYTYPE_VIDEOCALL	0x0a
+#define ANYCHAT_NOTIFYTYPE_OBJECTEVENT	0x0b
+#define ANYCHAT_NOTIFYTYPE_CORESDKEVENT	0x0c
+
+#define kAnyChatNotify_TYPE     "NOTIFYTYPE"
+
+#endif //APPLEOS
+
+
+#define ANYCHAT_MEDIA_FLAG_VAD		0x00000001L			///< 静音检测
+#define ANYCHAT_MEDIA_FLAG_NS		0x00000002L			///< 噪音抑制
+#define ANYCHAT_MEDIA_FLAG_AEC		0x00000004L			///< 回音消除
+#define ANYCHAT_MEDIA_FLAG_AGC		0x00000008L			///< 自动增益
+#define ANYCHAT_MEDIA_FLAG_CNG		0x00000010L			///< 舒适噪音生成
+
+// 音频流播放缓冲区状态定义
+#define ANYCHAT_AUDIOBUFFER_UNKNOW			0x00		///< 未知
+#define ANYCHAT_AUDIOBUFFER_UNDERFLOW		0x01		///< 缓冲区不足，下行溢出
+#define ANYCHAT_AUDIOBUFFER_NORMAL			0x02		///< 正常
+#define ANYCHAT_AUDIOBUFFER_OVERFLOW		0x03		///< 缓冲区满，上行溢出
+
+// 录制文件格式定义
+#define ANYCHAT_RECORD_FILETYPE_MP4			0			///< MP4格式
+#define ANYCHAT_RECORD_FILETYPE_WMV			1			///< WMV格式
+#define ANYCHAT_RECORD_FILETYPE_FLV			2			///< FLV格式
+#define ANYCHAT_RECORD_FILETYPE_MP3			3			///< MP3格式
+#define ANYCHAT_RECORD_FILETYPE_WMA			4			///< WMA格式
+#define ANYCHAT_RECORD_FILETYPE_AAC			5			///< AAC格式
+#define ANYCHAT_RECORD_FILETYPE_JPG			8			///< JPG格式
+
+// 回调路径方式定义
+#define ANYCHAT_CBPATHTYPE_RELATIVE			0			///< 相对路径
+#define ANYCHAT_CBPATHTYPE_FULLPATH			1			///< 完整路径（绝对路径）
+#define ANYCHAT_CBPATHTYPE_URLADDR			2			///< URL路径
+#define ANYCHAT_CBPATHTYPE_FILEGUID			3			///< 文件ID
+
+// 保存文件路径风格定义
+#define ANYCHAT_PATHSTYLE_ROOTDIR			0			///< 保存在根目录下
+#define ANYCHAT_PATHSTYLE_YM_YMD			1			///< 保存在子目录下：年月/年月日/
+#define ANYCHAT_PATHSTYLE_YMD				2			///< 保存在子目录下：年月日/
+
+
+// 录制文件生成规则定义
+#define ANYCHAT_RECORD_FILERULE_DISDATEDIR	0x00000001	///< 禁止日期目录
+
+#define ANYCHAT_RECORD_STREAMBUFFERTIME		10000		///< 录制时默认数据流缓冲时间，单位：ms
+
+// 透明通道标志
+#define ANYCHAT_TRANSBUFFER_FLAGS_STANDARD	0x01000000	///< 标准透明通道
+
+// 本地IP地址
+#define ANYCHAT_LOCALHOST_IP				0x7F000001	///< 本地IP定义：127.0.0.1
+
+// RTMP流前缀
+#define ANYCHAT_RTMPSTREAM_PREFIX			_T("rtmp://")
+
+// 采集卡板载音频采集设备名称
+#define ANYCHAT_INCARD_AUDIODEVICENAME		_T("InCard Audio Capture")
+// 内置桌面共享虚拟摄像头名称
+#define ANYCHAT_NATIVE_SCREENCAMERANAME		_T("Native Screen Camera")
+
+// 云平台文件分类子目录
+#define ANYCHAT_CLOUD_FILEPREFIX_UPLOAD		"upload"	///< 用户上传文件
+#define ANYCHAT_CLOUD_FILEPREFIX_RECORD		"record"	///< 服务器录像文件
+#define ANYCHAT_CLOUD_FILEPREFIX_SNAPSHOT	"snapshot"	///< 快照文件
+
+
+// 核心库文件名
+#ifdef _UNICODE
+#	define ANYCHAT_CORE_FILENAME	_T("BRAnyChatCoreU.dll")
+#else
+#	define ANYCHAT_CORE_FILENAME	_T("BRAnyChatCore.dll")
+#endif
+
+// 内部事件通知事件类型，回调函数使用
+enum NATIVE_EVENTTYPE
+{
+	NATIVE_EVNTYPE_AUDIOUNDERFLOW = 0,					///< 音频播放缓冲区不足，wParam表示缓冲区通道号
+	NATIVE_EVNTYPE_LOGSTRING,							///< 日志信息，wParam表示字符串地址
+	NATIVE_EVNTYPE_VIDEOERROR,							///< 视频出错，wParam表示出错代码
+	NATIVE_EVNTYPE_AUDIOVOLUMECHANGE,					///< 系统音量改变
+	NATIVE_EVNTYPE_AUDIOPLAYFORMAT,						///< 音频播放格式
+	NATIVE_EVNTYPE_PPTHELPER,							///< PPTHelper事件
+};
+
+#define ANYCHAT_SDK_FLAGS_ARMV6LIB			0x00000001	///< 强制使用ARMv6指令集的库，android平台使用
+#define ANYCHAT_SDK_FLAGS_LOWDELAY			0x00000002	///< 低延迟模式
+#define ANYCHAT_SDK_FLAGS_LARGEDELAY		0X00000004	///< 高延迟网络模式
+#define ANYCHAT_SDK_FLAGS_FIXCOLOR			0x00000008	///< 修正视频采集颜色偏色
+#define ANYCHAT_SDK_FLAGS_LARGEAUDIOBUF		0x00000010	///< 大音频播放缓冲区，适合低性能机器
+#define ANYCHAT_SDK_FLAGS_GPUDIRECTRENDER	0x00000020	///< 视频数据经过GPU直接渲染，将解码后的视频数据直接传输到GPU的物理地址
+#define ANYCHAT_SDK_FLAGS_HWCODEC			0x00000040	///< 启用硬件平台内置编码器
+#define ANYCAHT_SDK_FLAGS_DEVICEMODE		0x00000080	///< 设备模式
+#define ANYCHAT_SDK_FLAGS_DISABLERECONNECT	0x00000100	///< 禁止自动重连
+#define ANYCHAT_SDK_FLAGS_SCREENCAMERA		0x00000200	///< 屏幕摄像头（桌面共享）
+#define ANYCHAT_SDK_FLAGS_DATAENCRYPTION	0x00000400	///< 数据加密模式
+#define ANYCHAT_SDK_FLAGS_VSHOWNOROTATION	0x00000800	///< 视频显示禁止旋转
+#define ANYCHAT_SDK_FLAGS_UPLOADLOGINFO		0x00001000	///< 上传日志信息到服务器
+#define ANYCHAT_SDK_FLAGS_OVERLAYTIMESTAMP	0x00002000	///< 迭加时间戳到本地视频
+#define ANYCHAT_SDK_FLAGS_OVERLAYANYCHAT	0x00004000	///< 迭加AnyChat字幕到视频上（评估版本）
+#define ANYCHAT_SDK_FLAGS_LOCALROTATION		0x00008000	///< 本地修正视频方向
+#define ANYCHAT_SDK_FLAGS_DISMEDIACONSUL	0x00010000	///< 禁止媒体协商
+#define ANYCHAT_SDK_FLAGS_FITTENCENTLIVE	0x00020000	///< 兼容腾讯视频直播SDK（有libx264库冲突的问题，采用VP8编码）
+#define ANYCHAT_SDK_FLAGS_DISABLEDNS		0x00040000	///< 屏蔽DNS寻址过程
+#define ANYCHAT_SDK_FLAGS_KEEPALLLOGFILES	0x00080000	///< 保存所有客户端日志文件（分文件保存）
+#define ANYCHAT_SDK_FLAGS_DISABLEIPV6DNS	0x00100000	///< 禁止IPv6域名解析
+
+
+
+// 授权功能标识定义
+#define ANYCHAT_CERTFUNC_VIDEOSTREAM	0x00000001		///< 视频流
+#define ANYCHAT_CERTFUNC_AUDIOSTREAM	0x00000002		///< 音频流
+#define ANYCHAT_CERTFUNC_TEXTMESSAGE	0x00000004		///< 文字消息
+#define ANYCHAT_CERTFUNC_SNAPSHOT		0x00000008		///< 本地拍照
+#define ANYCHAT_CERTFUNC_TRANSBUFFER	0x00000010		///< 透明通道
+#define ANYCHAT_CERTFUNC_TRANSFILE		0x00000020		///< 文件传输
+#define ANYCHAT_CERTFUNC_STREAMRECORD	0x00000040		///< 流媒体记录
+#define ANYCHAT_CERTFUNC_MULTICAST		0x00000080		///< IP组播
+#define ANYCHAT_CERTFUNC_EXTERNSTREAM	0x00000100		///< 外部音视频数据输入
+#define ANYCHAT_CERTFUNC_PRIVATECHAT	0x00000200		///< 私聊
+#define ANYCHAT_CERTFUNC_HDVIDEO		0x00000400		///< 高清视频
+#define ANYCHAT_CERTFUNC_CENTERRECORD	0x00000800		///< 中心端录像
+#define ANYCHAT_CERTFUNC_VIDEOCALL		0x00001000		///< 视频呼叫
+#define ANYCHAT_CERTFUNC_USERFRIENDS	0x00002000		///< 用户好友
+#define ANYCHAT_CERTFUNC_MIXRECORD		0x00004000		///< 合成录像
+#define ANYCHAT_CERTFUNC_SERVERCAPTURE	0x00008000		///< 服务器拍照
+#define ANYCHAT_CERTFUNC_HOTSERVER		0x00010000		///< 双机热备
+#define ANYCHAT_CERTFUNC_DISTRIBUTED	0x00020000		///< 分布式部署
+#define ANYCHAT_CERTFUNC_MIXSTREAMREC	0x00040000		///< 合成流录像
+#define ANYCHAT_CERTFUNC_SERVICEQUEUE	0x00080000		///< 服务队列
+#define ANYCHAT_CERTFUNC_SIP			0x00100000		///< SIP通信
+#define ANYCHAT_CERTFUNC_MULTISTREAM	0x00200000		///< 多路流
+#define ANYCHAT_CERTFUNC_REMOTEASSIST	0x00400000		///< 远程协助
+#define ANYCHAT_CERTFUNC_RTMPSTREAM		0x00800000		///< 视频流直播
+#define ANYCHAT_CERTFUNC_ONLINEVOD		0x01000000		///< 视频在线点播
+#define ANYCHAT_CERTFUNC_VOICEMESSAGE	0x02000000		///< 语音留言
+#define ANYCHAT_CERTFUNC_VIDEOMESSAGE	0x04000000		///< 视频消息（短视频）
+#define ANYCHAT_CERTFUNC_IPV6			0x08000000		///< 支持IPv6网络
+#define ANYCHAT_CERTFUNC_CLOUDSTORAGE	0x10000000		///< 云存储
+
+#define ANYCHAT_CERTFUNC2_PCPLAYAUDREC	0x00000001		///< PC端风险语音播报
+#define ANYCHAT_CERTFUNC2_PCPICRECORD	0x00000002		///< PC端PPT录制
+#define ANYCHAT_CERTFUNC2_MBPLAYAUDREC	0x00000004		///< 移动端风险语音播报
+#define ANYCHAT_CERTFUNC2_MBPICRECORD	0x00000008		///< 移动端PPT录制
+#define ANYCHAT_CERTFUNC2_VIRTUALBK		0x00000010		///< 虚拟背景
+#define ANYCHAT_CERTFUNC2_WATERMARK		0x00000020		///< 水印
+#define ANYCHAT_CERTFUNC2_FILEENC		0x00000040		///< 文件加密
+#define ANYCHAT_CERTFUNC2_UNIFIEDQUEUE	0x00000100		///< 统一排队
+#define ANYCHAT_CERTFUNC2_SERVICEREPORT	0x00000200		///< 业务报表
+#define ANYCHAT_CERTFUNC2_PCPLAYVIDREC	0x00000400		///< PC端风险视频播报	
+#define ANYCHAT_CERTFUNC2_MBPLAYVIDREC	0x00000800		///< 移动端风险视频播报
+
+
+
+#define ANYCHAT_NORMAL_VIDEOMAXWIDTH	320				///< 标准视频最大分辨率宽度
+#define ANYCHAT_NORMAL_VIDEOMAXHEIGHT	240				///< 标准视频最大分辩率高度
+
+
+
+
+
+// 用户终端类型定义
+#define ANYCHAT_DEVICETYPE_UNKNOW		0
+#define ANYCHAT_DEVICETYPE_WINDOWS		1
+#define ANYCHAT_DEVICETYPE_ANDROID		2
+#define ANYCHAT_DEVICETYPE_IOS			3
+#define ANYCHAT_DEVICETYPE_WEB			4
+#define ANYCHAT_DEVICETYPE_LINUX		5
+#define ANYCHAT_DEVICETYPE_MAC			6
+#define ANYCHAT_DEVICETYPE_WINPHONE		7
+#define ANYCHAT_DEVICETYPE_WINCE		8
+
+// 终端设备类型定义
+#define ANYCHAT_DEVICEMODE_UNKNOW		0				///< 未知设备
+#define ANYCHAT_DEVICEMODE_PHONE		1				///< 手机
+#define ANYCHAT_DEVICEMODE_PAD			2				///< Pad
+
+
+// 设备方向定义
+#define ANYCHAT_DEVICEORIENTATION_UNKNOW			0
+#define ANYCHAT_DEVICEORIENTATION_FACEUP			1		// Device oriented flat, face up
+#define ANYCHAT_DEVICEORIENTATION_FACEDOWN			2		// Device oriented flat, face down
+#define ANYCHAT_DEVICEORIENTATION_LANDSCAPELEFT		3		// Device oriented horizontally, home button on the right
+#define ANYCHAT_DEVICEORIENTATION_LANDSCAPERIGHT	4		// Device oriented horizontally, home button on the left
+#define ANYCHAT_DEVICEORIENTATION_PORTRAIT			5		// Device oriented vertically, home button on the bottom
+#define ANYCHAT_DEVICEORIENTATION_PORTRAITUPSIDE	6		// Device oriented vertically, home button on the top
+
+// 摄像头位置定义
+#define ANYCHAT_CAMERAPOSITION_UNKNOW				-1
+#define ANYCHAT_CAMERAPOSITION_BACK					0
+#define ANYCHAT_CAMERAPOSITION_FRONT				1
+
+// 用户在线状态定义
+#define ANYCHAT_USERONLINESTATUS_UNKNOW				0	///< 未知状态
+#define ANYCHAT_USERONLINESTATUS_OFFLINE			1	///< 离线状态
+#define ANYCHAT_USERONLINESTATUS_ONLINE				2	///< 在线状态
+
+
+// 服务器异步事件类型定义
+#define ANYCHAT_SERVERASYNCTASK_USERLOGIN			1	///< 用户登录
+#define ANYCHAT_SERVERASYNCTASK_ENTERROOM			2	///< 进入房间
+#define ANYCHAT_SERVERASYNCTASK_VIDEOCALL			3	///< 视频呼叫
+
+
+// 应用程序标志定义
+#define ANYCHAT_APPFLAGS_CLIENT			0x00000001	///< 客户端程序
+#define ANYCHAT_APPFLAGS_MOBILE			0x00000002	///< Windows Mobile平台
+#define ANYCHAT_APPFLAGS_ANDROID		0x00000004	///< Google Android平台
+#define ANYCHAT_APPFLAGS_IPHONE			0x00000008	///< Apple iOS平台
+#define ANYCHAT_APPFLAGS_MAC			0x00000010	///< Apple Mac平台
+#define ANYCHAT_APPFLAGS_LINUX86		0x00000020	///< Linux X86平台
+#define ANYCHAT_APPFLAGS_LINUXARM		0x00000040	///< Linux ARM平台
+#define ANYCHAT_APPFLAGS_WINDOWS		0x00000080	///< Windows平台
+#define ANYCHAT_APPFLAGS_UNICODE		0x00001000	///< Unicode编码
+#define ANYCHAT_APPFLAGS_WEB			0x00002000	///< Web模式
+#define ANYCHAT_APPFLAGS_UTF8			0x00004000	///< UTF8编码
+#define ANYCHAT_APPFLAGS_CHECKSUMBUF	0x00008000	///< 客户端支持校验缓冲区传输
+#define ANYCHAT_APPFLAGS_STREAMDATAEX	0x00010000	///< 支持流媒体传输扩展协议
+#define ANYCHAT_APPFLAGS_SERVER			0x00020000	///< 服务器程序
+#define ANYCHAT_APPFLAGS_CLUSTER		0x00040000	///< 支持服务器集群协议
+#define ANYCHAT_APPFLAGS_TRIALLINK		0x00080000	///< 尝试连接，用于DNS寻址、网络质量评估
+#define ANYCHAT_APPFLAGS_DIRECTCMD		0x00100000	///< 支持直接的通信指令
+#define ANYCHAT_APPFLAGS_JSONCALLBACK	0x00200000	///< 支持JSON指令回调
+#define ANYCHAT_APPFLAGS_PTLPIPELINE	0x00400000	///< 支持ProtocolPipeLine协议
+#define ANYCHAT_APPFLAGS_RECONNECT		0x00800000	///< 重连
+
+// 服务器标志定义
+#define ANYCHAT_SVRFLAGS_ROOTSERVER		0x00000001	///< 根服务器
+#define ANYCHAT_SVRFLAGS_DNSSERVER		0x00000002	///< DNS服务器
+#define ANYCHAT_SVRFLAGS_LOGINSERVER	0x00000004	///< 接入服务器
+#define ANYCHAT_SVRFLAGS_MEDIASERVER	0x00000008	///< 媒体服务器
+#define ANYCHAT_SVRFLAGS_CORESERVER		0x00000010	///< 核心服务器
+#define ANYCHAT_SVRFLAGS_RECORDSERVER	0x00000020	///< 录像服务器
+#define ANYCHAT_SVRFLAGS_FILESERVER		0x00000040	///< 文件服务器
+#define ANYCHAT_SVRFLAGS_DBPROXYSERVER	0x00000080	///< 数据库代理服务器
+#define ANYCHAT_SVRFLAGS_APPSERVER		0x00000100	///< 应用服务器
+#define ANYCHAT_SVRFLAGS_WORMHOLESERVER	0x00000200	///< 虫洞服务器
+#define ANYCHAT_SVRFLAGS_BUSINESERVER	0x00000400	///< 业务服务器
+#define ANYCHAT_SVRFLAGS_QUEUESERVER	0x00000800	///< 队列服务器
+#define ANYCHAT_SVRFLAGS_LBSERVER		0x00001000	///< 负载均衡服务器（Load-Balancing Server）
+#define ANYCHAT_SVRFLAGS_MTSERVER		0x00002000	///< 监控服务器
+#define ANYCHAT_SVRFLAGS_PMSERVER		0x00004000	///< 进程管理服务器
+#define ANYCHAT_SVRFLAGS_LUSERVER		0x00008000	///< 自动升级服务器
+#define ANYCHAT_SVRFLAGS_HTML5SERVER	0x00010000	///< HTML5服务器
+#define ANYCHAT_SVRFLAGS_AGENTSERVER	0x00020000	///< 代理服务器
+#define ANYCHAT_SVRFLAGS_RECORDPROXY	0x00040000	///< 录像代理服务器
+#define ANYCHAT_SVRFLAGS_RECORDDISPATCH	0x00080000	///< 录像任务调度服务器
+#define ANYCHAT_SVRFLAGS_DBSERVER		0x00100000	///< 数据库服务器
+
+
+// 回调事件返回路径类型
+#define ANYCHAT_CBPATHTYPE_RELATIVEPATH			0	///< 相对路径
+#define ANYCHAT_CBPATHTYPE_FULLPATH				1	///< 绝对路径
+#define ANYCHAT_CBPATHTYPE_URLPATH				2	///< URL路径
+#define ANYCHAT_CBPATHTYPE_FILEGUID				3	///< 录像文件ID
+
+// 客户端调试信息类型定义
+#define ANYCHAT_DEBUGINFOTYPE_APIINVOKE			1	///< API调用日志
+#define ANYCHAT_DEBUGINFOTYPE_CALLBACK			2	///< 回调事件日志
+#define ANYCHAT_DEBUGINFOTYPE_NETSTATUS			3	///< 网络状态信息
+#define ANYCHAT_DEBUGINFOTYPE_TRANSTASK			4	///< 传输任务日志
+#define ANYCHAT_DEBUGINFOTYPE_TRANSBUFFER		5	///< 透明通道数据传输日志
+#define ANYCHAT_DEBUGINFOTYPE_CODEC				6	///< 底层Codec信息输出
+
+#define IMAGE_FILTER_TYPE_BACKGROUND	0x01		///< 背景抠图+合成
+#define IMAGE_FILTER_TYPE_IMAGE			0x02		///< 图片迭加
+#define IMAGE_FILTER_TYPE_DRAWTEXT		0x04		///< 文字迭加
+
+
+// 编码流参数回调函数定义
+typedef void (CALLBACK * MediaEncodeParamCallBack)(DWORD dwStreamIndex, PCHAR lpbuf, DWORD dwLen, DWORD dwFlags, void* lpUserValue);
+// 编码数据流回调函数定义
+typedef void (CALLBACK * MediaEncodeStreamCallBack)(DWORD dwStreamIndex, PCHAR lpbuf, DWORD dwLen, DWORD dwFlags, DWORD dwSequenceNo, DWORD dwTimeStamp, void* lpUserValue);
+
+
+#define ANYCHAT_MAX_ROOTSERVER_NUM			10		///< 最大根服务器数量
+
+#define ANYCHAT_MAX_STREAM_NUM				9		///< 最大视频流数量
+#define ANYCHAT_MAX_IP_NUM					5		///< 最大IP地址数量
+#define ANYCHAT_MAX_NAMELENGTH				30		///< 最大别名长度
+
+
+#define ANYCHAT_NATIVE_PRIVATE_KEY	"-----BEGIN RSA PRIVATE KEY-----\n									\
+									MIICXgIBAAKBgQC9Vtf7SUcnNWtGjUSXDp5gxMs+j/VDqTmf04JRflNzCjBu6ZgJ	\
+									klkUrgHNbk8Jy1DMFhCEe+OJfqWQFciiWTmtqpCaLMnaDF4muwliDy10RYGapiyp	\
+									iIqYRfaH8tq1abeYDBFH7rspw1I7MhalcmWczBW8I09rVQnPdsbErTd+XQIDAQAB	\
+									AoGBALaG4OHby59NzSQPjd799cqeDL08NJpMqkOcuFXtrW8KlJRn1uzrS7s24H/1	\
+									ZnavrS2B29yMPldPYzZa+bcgwwsvHdFXiq2KKRohsIFHojYYJsHOu50+i8pvcVeF	\
+									06kCKnNL4Rk/CUX6gH9XcMadSuB89o7J1lVf6hYgY8r5+a1hAkEA/GSdmNbtl8ou	\
+									+tkoyMBsmL61XWxOoY5B3rI76TxgATlmo1jjS7FDTqwnwwmpZJ34JI0HBY2CiC8o	\
+									qStXraX26QJBAMALi2zJVXR5XpEGWceOcqAYbdV6ndcgSF7U2wb1q7ALhBzYaldt	\
+									N91pJZ2CnxW+en6GFClzczX03ywfubgsi1UCQQD3tsC+u2OhsLx/UxemQMXU/IgA	\
+									00YxZe/cZE5M0gbf7LiB5cHgDnCjDHBSCm+I40oihY+4sXTFuJNNxc5eDh/RAkAk	\
+									+xQiIrL99tErBBoNv3R7N7kOvsnePy0wdbSnpm8lO1J5a4Muyq1TSYggyKJxwXg9	\
+									HPyM7tpkrX68NG/C83DxAkEApRPcjLUzHZOcdEQOOA7o9lpl6I+l4zoeY6SZDQbM	\
+									+1hEZVgUHyI3LBM1w0hlocN1YRLvLuD7d0LVgKPP7Vqf0g==					\
+									\n-----END RSA PRIVATE KEY-----\n" 
+
+#define ANYCHAT_NATIVE_PUBLIC_KEY	"-----BEGIN PUBLIC KEY-----\n										\
+									MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9Vtf7SUcnNWtGjUSXDp5gxMs+	\
+									j/VDqTmf04JRflNzCjBu6ZgJklkUrgHNbk8Jy1DMFhCEe+OJfqWQFciiWTmtqpCa	\
+									LMnaDF4muwliDy10RYGapiypiIqYRfaH8tq1abeYDBFH7rspw1I7MhalcmWczBW8	\
+									I09rVQnPdsbErTd+XQIDAQAB											\
+									\n-----END PUBLIC KEY-----\n"
+
+#define ANYCHAT_AGENTCONNECT_PUBLIC_KEY	"-----BEGIN PUBLIC KEY-----\n									\
+									MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGEohRW6SYNb385uomALFAUwv2JR	\
+									jDrdpxP6SvEyTUI+rXvJEwTbEYCkMVxn9FYu7jVasz1iNMZMjJCgbWwLLhnmqse+	\
+									n6k9vqxTOQ+LyFXZYp5vKsknEzlpvguJWnK5bAGKmx0X+GWWJTUI0nGooZJP/IWY	\
+									vVwAdyRud0jbO3gHAgMBAAE=											\
+									\n-----END PUBLIC KEY-----\n"
+
+
+#endif // _ANYCHAT_CORE_GLOBAL_DEFINE_H__INCLUDED_
